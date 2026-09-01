@@ -8,7 +8,7 @@
 	.globl hex2asc, hexasc
 
 hex2asc:
-	li	a0, 4		# test number (from 0 to 15)
+	li	a0, 15		# test number (from 0 to 15)
 	
 	addi    sp,sp,-4
 	sw      ra,0(sp)
@@ -24,3 +24,15 @@ hex2asc:
 
   # You can write your own code for hexasc here
   #
+ hexasc:
+ 	slli a0, a0, 28
+ 	srli a0, a0, 28
+ 	addi t0, zero, 58
+ 	
+ 	addi a0, a0, 48
+ 	
+ 	blt a0, t0, lessthan
+ 		addi a0, a0, 7
+ 	
+ 	lessthan:
+ 	jr ra
