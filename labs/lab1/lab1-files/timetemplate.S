@@ -118,6 +118,9 @@ tiend:	sw	t0,0(a0)	# save updated result
 #########################################################
 # Place for your functions: time2string, hexasc, delay. #
 #########################################################
+delay:
+	jr ra
+
 hexasc:
  	slli a0, a0, 28 # bit shift to preserve only the 4 lsb.
  	srli a0, a0, 28
