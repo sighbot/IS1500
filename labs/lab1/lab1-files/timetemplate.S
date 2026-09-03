@@ -118,3 +118,16 @@ tiend:	sw	t0,0(a0)	# save updated result
 #########################################################
 # Place for your functions: time2string, hexasc, delay. #
 #########################################################
+hexasc:
+ 	slli a0, a0, 28 # bit shift to preserve only the 4 lsb.
+ 	srli a0, a0, 28
+ 	
+ 	addi t0, zero, 58 # ASCII-code for character after '9'
+ 	
+ 	addi a0, a0, 48 # add 58 to convert number to ASCII-code
+ 	
+ 	blt a0, t0, lessthan # If ASCII-code exceeds 57, add offset to reach ASCII-codes for letters.
+ 		addi a0, a0, 7
+ 	
+ 	lessthan:
+ 	jr ra
