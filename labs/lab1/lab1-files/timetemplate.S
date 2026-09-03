@@ -41,8 +41,8 @@
 
 	.data
 	.align 2
-mytime:	.word 	0x5957
-timstr:	.asciz 	"text more text lots of text\0"
+mytime:	.word 	0x5957 # 0000 0000 0000 0000 0101 1001 0101 0111
+timstr:	.asciz 	"text more text lots of text\0" # want timstr to be 0x0037353A3935
 	.text
 	# delay is declared global so the auto-grader's test harness (which
 	# calls delay directly from a small labmain.S) can resolve the symbol.
@@ -118,9 +118,6 @@ tiend:	sw	t0,0(a0)	# save updated result
 #########################################################
 # Place for your functions: time2string, hexasc, delay. #
 #########################################################
-delay:
-	jr ra
-
 hexasc:
  	slli a0, a0, 28 # bit shift to preserve only the 4 lsb.
  	srli a0, a0, 28
@@ -134,3 +131,21 @@ hexasc:
  	
  	lessthan:
  	jr ra
+delay:
+	jr ra
+	
+# a1 contains: 0000 0000 0000 0000 0101 1001 0101 0111
+# translate each 4-bit digit to 8-bit ASCII 
+time2string:
+	li t0, a0
+	
+	addi t1, t1, 4
+	addi t2, t2, zero
+	
+	blt t2, t1, done # iterate 4 times
+		li a0, t0 # copy t0 to a0
+		srli t0, t0, 4 # shift t0 right 4 to process next nibble next iteration
+		addi t2, t2, 1 # increment loop
+		jal hexasc: #?
+	
+	done:
