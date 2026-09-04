@@ -15,11 +15,11 @@ instruction to branch to another location? This is called a taken branch.
 
 ### 4.3 Printing the Time ###
 - Which registers are saved and restored by your subroutine? Why?
-  -
+  - The return address (ra register) is saved by time2string because we need to store the return address to timetemplate as ra will be updated once time2string calls hexasc. After hexasc is run and we have returned to time2string, we can safely restore the return address to timetemplate by popping off the previously stored value off from the stack. 
 - Which registers are used but not saved? Why are these not saved?
-  -
+  - The subroutine uses a0, a1 and t1. The contents of a0 is saved temporarily into t1 for the remainder of the lifetime of time2string so a0 can be used as an argument for hexasc. We use a1 but it is never modified during time2string, thus it does need to be saved. 
 - Assume the time is 16:53. Which lines of your code handle the ‘5’?
-  -
+  - In time2string, lines 158-161 handle the '5' of 16:53.
 
 ### 4.4 Programming a Simple Delay ###
 
