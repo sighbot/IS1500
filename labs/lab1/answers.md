@@ -22,7 +22,11 @@ instruction to branch to another location? This is called a taken branch.
   - In time2string, lines 158-161 handle the '5' of 16:53.
 
 ### 4.4 Programming a Simple Delay ###
-
+- If the argument value in register a0 is zero, which instructions in your subroutine are
+executed? How many times each? Why?
+  - If a0 is zero, none of the instructions in the delay subroutine are executed expected for the initial loadings as well as the branch jump to label done.
+- Repeat the previous question for a negative number: −1.
+  - Since the branch instruction is specifically less or equal to zero, the same as mentioned above will happen for negative numbers. 
 
 ### 4.5  Move to the Development Board ###
 
