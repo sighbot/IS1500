@@ -29,6 +29,6 @@ executed? How many times each? Why?
   - Since the branch instruction is specifically less or equal to zero, the same as mentioned above will happen for negative numbers. 
 
 ### 4.5  Move to the Development Board ###
-
-
-### 4.6 At the Lab Session ###
+-  What is the effect of the assembler directive .global? Why is the directive particularly
+important in this assignment?
+  - The .global assembler directive makes labels created in one file accessible to other files, which is important in this assignment because one file calls sub-routines from others.
