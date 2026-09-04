@@ -14,7 +14,12 @@ instruction to branch to another location? This is called a taken branch.
   - Anything less than register t0, which we put as ASCII number 58, cause the instruction to branch to another location. In other words, any input value equal to or less than 9 (ASCII number 57) cause the instruction to branch.
 
 ### 4.3 Printing the Time ###
-
+- Which registers are saved and restored by your subroutine? Why?
+  -
+- Which registers are used but not saved? Why are these not saved?
+  -
+- Assume the time is 16:53. Which lines of your code handle the ‘5’?
+  -
 
 ### 4.4 Programming a Simple Delay ###
 
