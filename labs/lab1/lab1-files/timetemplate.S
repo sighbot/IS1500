@@ -42,6 +42,7 @@
 	.data
 	.align 2
 mytime:	.word 	0x5957 # 0000 0000 0000 0000 0101 1001 0101 0111
+loops_per_ms: .word 4711 # change to change lenth of one millisecond
 timstr:	.asciz 	"text more text lots of text\0" # want timstr to be 0x0037353A3935
 	.text
 	# delay is declared global so the auto-grader's test harness (which
@@ -131,7 +132,24 @@ hexasc:
  	
  	lessthan:
  	jr ra
+# delays for n milliseconds where the lenght of a ms is
+# determined by loops_per_ms.
 delay:
+	la t0, loops_per_ms
+	lw a1 0(t0)
+	
+	while_loop:
+	blez a0, done # break loop if ms (a0) <= 0
+		addi a0, a0, -1 # decrement ms (a0)
+		mv t1, a1 # copy no. of iterations per ms to t1 (counter)
+		
+		for_loop:
+			blez t1, while_loop # break loop if counter (t1) <= 0
+				addi t1, t1, -1 # decrement counter (t1)
+				j for_loop
+				
+		j while_loop
+	done:
 	jr ra
 	
 # a1 contains: 0000 0000 0000 0000 0101 1001 0101 0111
