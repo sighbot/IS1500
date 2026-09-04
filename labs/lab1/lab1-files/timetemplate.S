@@ -151,9 +151,9 @@ time2string:
 	
 	sb a0, 1(t1)  # store contents of a0 into address of t1+1
 	
-	li a0, 0x3a # load ASCII for a column
+	li a0, 0x3a # load ASCII for a colon
 	
-	sb a0, 2(t1) # store ASCII for column into address of t1+2
+	sb a0, 2(t1) # store ASCII for colon into address of t1+2
 	
 	srli a0, a1, 4 # isolate bits 24-27
 	jal hexasc # convert to ASCII
