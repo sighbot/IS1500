@@ -141,32 +141,32 @@ time2string:
 	
 	mv t1, a0 # store destination address to free up a0
 	
-	srli a0, a1, 12 # isolate bits 17-21
+	srli a0, a1, 12 # isolate bits 16-19
 	jal hexasc # convert to ASCII
 	
-	sb a0, 0(t1)
+	sb a0, 0(t1) # store contents of a0 into address of t1
 	
-	srli a0, a1, 8
-	jal hexasc
+	srli a0, a1, 8 # isolate bits 20-23
+	jal hexasc # convert to ASCII
 	
-	sb a0, 1(t1)
+	sb a0, 1(t1)  # store contents of a0 into address of t1+1
 	
-	li a0, 0x3a
+	li a0, 0x3a # load ASCII for a column
 	
-	sb a0, 2(t1)
+	sb a0, 2(t1) # store ASCII for column into address of t1+2
 	
-	srli a0, a1, 4
-	jal hexasc
+	srli a0, a1, 4 # isolate bits 24-27
+	jal hexasc # convert to ASCII
 	
-	sb a0, 3(t1)
+	sb a0, 3(t1) # store contents of a0 into address of t1+3
 	
-	mv a0, a1
-	jal hexasc
+	mv a0, a1 # store a1 into a0 to use final bits 28-31
+	jal hexasc # convert to ASCII
 	
-	sb a0, 4(t1)
+	sb a0, 4(t1) # store contents of a0 into address of t1+4
 	
-	li a0, 0x00
-	sb a0, 5(t1)
+	li a0, 0x00 # load null-byte into a0
+	sb a0, 5(t1) # store null-byte into address of t1+5
 	
 	POP (ra) # restore return address
 	
