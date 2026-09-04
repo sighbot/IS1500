@@ -137,15 +137,42 @@ delay:
 # a1 contains: 0000 0000 0000 0000 0101 1001 0101 0111
 # translate each 4-bit digit to 8-bit ASCII 
 time2string:
-	li t0, a0
+	PUSH (ra) # save return address (to timetemplate)
 	
-	addi t1, t1, 4
-	addi t2, t2, zero
+	mv t1, a0 # store destination address to free up a0
 	
-	blt t2, t1, done # iterate 4 times
-		li a0, t0 # copy t0 to a0
-		srli t0, t0, 4 # shift t0 right 4 to process next nibble next iteration
-		addi t2, t2, 1 # increment loop
-		jal hexasc: #?
+	srli a0, a1, 12 # isolate bits 17-21
+	jal hexasc # convert to ASCII
 	
-	done:
+	sb a0, 0(t1)
+	
+	srli a0, a1, 8
+	jal hexasc
+	
+	sb a0, 1(t1)
+	
+	li a0, 0x3a
+	
+	sb a0, 2(t1)
+	
+	srli a0, a1, 4
+	jal hexasc
+	
+	sb a0, 3(t1)
+	
+	mv a0, a1
+	jal hexasc
+	
+	sb a0, 4(t1)
+	
+	li a0, 0x00
+	sb a0, 5(t1)
+	
+	POP (ra) # restore return address
+	
+	jr ra
+	
+	
+	
+	
+	
