@@ -12,7 +12,7 @@
 
 #define LIST_SIZE_BYTES 80
 
-void copycodes(char* txt1, int* lst1, int counter);
+void copycodes(char* txt1, int* lst1, int* counter);
 void work();
 
 char* text1 = "This is a string.";
@@ -56,11 +56,11 @@ int main(void){
 }
 
 void work(){
-  copycodes(text1, list1, counter);
-  copycodes(text2, list2, counter);
+  copycodes(text1, list1, &counter);
+  copycodes(text2, list2, &counter);
 }
 
-void copycodes(char* txt1, int* lst1, int counter){
+void copycodes(char* txt1, int* lst1, int* counter){
   while(1){
     char t0 = *txt1;
     if (t0 != 0){
@@ -69,7 +69,7 @@ void copycodes(char* txt1, int* lst1, int counter){
       txt1++; // moves sizeof(char) bytes in memory
       lst1++; // moves sizeof(int) bytes in memory
       
-      counter++; // increments counter
+      *counter += 1; // increments counter
     }
     else {
       break;
