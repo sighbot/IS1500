@@ -58,7 +58,7 @@ than for in and gv?
 - They are in the dynamic data section, on the stack or heap. They are allocated at run-time, locally in main. Their address numbers are higher because the dynamic data section is higher up in memory.
 7. At print statement AM5, what is the address of pointer p, what is the value of pointer p,
 and what value is pointer p pointing to?
--
+- p is stored at the address 0x00100D74 which contains the address p points to 0x00100D70 which contains the value 7.
 8. At print statement AM7, what is the address of pointer p, what is the value of pointer p,
 and what value is pointer p pointing to?
 -
