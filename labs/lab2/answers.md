@@ -21,20 +21,20 @@ print_prime.c, sieves.c, and sieves-heap.c? Why or why not?
 
 1. Explain how you get the pointer addresses to the two char arrays (text1 and text2) and
 the counter variable (count) in function work().
--
+- You can get the pointer addresses of text1 and text2 automatically as both are initialized as pointers. As for counter, who is initialized as a normal variable, you can get the address by specifically calling for it through '&counter'.
 2. What does it mean to increment a pointer? What is the difference between incrementing
 the pointer that points to the ASCII text string, and incrementing the pointer that points
 to the integer array? In what way is the assembler code and the C code different?
--
+- Incrementing a pointer means to shift the address of it depending on the type size. The difference is that the pointer increments differently for these two types because they have a different byte size. The difference between how assembler code and C code does this is that C does this automatically.
 3. What is the difference between incrementing a pointer and incrementing a variable that a
 pointer points to? Explain how your code is incrementing the count variable.
--
+- Incrementing the pointer changes the address, thus changing the variable the pointer points to, while incrementing a variable changes the value of the variable at the address the pointer is pointing to. In the code, the counter's value is being incremented by dereferencing in the copycodes function.
 4. Explain a statement in your code where you are dereferencing a pointer. What does this
 mean? Explain by comparing it with the corresponding assembler code.
--
+- Line 67 (*lst1 = t0) is dereferencing a pointer, which means deal with the data actually stored in the memory location that the pointer points to.
 5. Is your computer using big-endian or little-endian? How did you come to your conclusion?
 Is there any benefit of using either of the two alternatives?
--
+- Little-endian. Because the LSB is stored at the far-left (the lower memory address). Big-endian is more readable to humans while little-endian is efficient for arithmetic.
 
 ## Assignment 3.5 ##
 1. Consider AM18, AM19, and AF1. Explain why gv ends up with the incremented value,
