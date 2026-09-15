@@ -49,12 +49,13 @@ points to have to be 9 bytes?
 4. Which addresses have fun and main? Which sections are they located in? What kind of
 memory are they stored in? What is the meaning of the data that these symbols points to?
 - fun and main have addresses 0x00000588 and 0x0000069C respectively. These addresses belong in the text section of the DTEK memory and point to where the executable machine instructions for each function begin. The text section is stored in flash memory where it persist without power and is easy to read.
+
 5. Which addresses are variables in and gv located at?
--
+- in has address 0x00000C28 and gv has address 0x00000C2C.
 6. Variables p and m are not global variables. Where are they allocated? Which memory
 section is used for these variables? Why are the address numbers for p and m much larger
 than for in and gv?
--
+- They are in the dynamic data section, on the stack or heap. They are allocated at run-time, locally in main. Their address numbers are higher because the dynamic data section is higher up in memory.
 7. At print statement AM5, what is the address of pointer p, what is the value of pointer p,
 and what value is pointer p pointing to?
 -
