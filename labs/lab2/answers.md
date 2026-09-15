@@ -45,7 +45,7 @@ the cp pointer itself?
 - Pointers are sized to hold the address they point to. They can therefore vary in size depending on the system. On the DTEK board, addresses are 4 bytes and so any pointers need to be at least that large.
 3. Explain how a C string is laid out in memory. Why does the character string that cp
 points to have to be 9 bytes?
--
+- Strings in C are actually arrays of characters. Each character appears sequentially in memory. The string cp points to needs to be 9 bytes to hold nine 1 byte chars. The ninth char is the string terminator which let's the program know to stop reading the string.
 4. Which addresses have fun and main? Which sections are they located in? What kind of
 memory are they stored in? What is the meaning of the data that these symbols points to?
 -
