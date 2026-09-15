@@ -11,7 +11,7 @@ useful?
 ## Assignment 3.3 ##
 
 1. What are the main steps in the algorithm? How have you implemented these steps?
-- 
+- We initially assume all numbers up to n are primes, and start from the smallest prime number, 2. Then we eliminate all multiples of that smallest prime number. After that, the smallest number not eliminated but still greater than the previous prime number becomes the next number used to eliminate multiples, until n is reached. For all these steps, for-loops are used to iterate through the list.
 2. What is the largest prime number that you can print within 2 seconds of computa
 tion? What is the largest number you can print within 10 seconds? Is it the same for
 print_prime.c, sieves.c, and sieves-heap.c? Why or why not?
