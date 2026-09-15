@@ -15,7 +15,13 @@ useful?
 2. What is the largest prime number that you can print within 2 seconds of computa
 tion? What is the largest number you can print within 10 seconds? Is it the same for
 print_prime.c, sieves.c, and sieves-heap.c? Why or why not?
--
+- | Program      |    2s  |    10s  |
+  |--------------|--------|---------|
+  |print-primes.c| ~200000| ~500000 |
+  |sieves.c      | ~50000 | ~105000 |
+  |sieves-heap.c | ~45000 | ~105000 |
+- Our implementation of sieves has many for-loops, one of them nested, whilst print-primes uses only one, unnested for-loop, reducing time complexity. Sieves-heap was slightly slower than sieves at 2s but any difference evened out after 10s.
+  
 
 ## Assignment 3.4 ##
 
