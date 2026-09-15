@@ -39,7 +39,7 @@ Is there any benefit of using either of the two alternatives?
 ## Assignment 3.5 ##
 1. Consider AM18, AM19, and AF1. Explain why gv ends up with the incremented value,
 but m does not.
--
+- gv and in are initialized to 0 and 3 respectively. Then in main, m is initialized to 0. Still in main but before they're used, gv is assigned 4 and m is assigned gv + in (or 4 + 3 = 7). Then the pointer p is assigned the address of m and m is incremented (via p) to 8. Lastly, during the call to fun(int), m is passed as param. Param is incremented by one, becoming 9 then assigned to gv. As a result, m is still 8 and gv is now 9 by the time they're printed.
 2. Pointer cp is a character pointer that points to a sequence of bytes. What is the size of
 the cp pointer itself?
 -
