@@ -42,7 +42,7 @@ but m does not.
 - gv and in are initialized to 0 and 3 respectively. Then in main, m is initialized to 0. Still in main but before they're used, gv is assigned 4 and m is assigned gv + in (or 4 + 3 = 7). Then the pointer p is assigned the address of m and m is incremented (via p) to 8. Lastly, during the call to fun(int), m is passed as param. Param is incremented by one, becoming 9 then assigned to gv. As a result, m is still 8 and gv is now 9 by the time they're printed.
 2. Pointer cp is a character pointer that points to a sequence of bytes. What is the size of
 the cp pointer itself?
--
+- Pointers are sized to hold the address they point to. They can therefore vary in size depending on the system. On the DTEK board, addresses are 4 bytes and so any pointers need to be at least that large.
 3. Explain how a C string is laid out in memory. Why does the character string that cp
 points to have to be 9 bytes?
 -
