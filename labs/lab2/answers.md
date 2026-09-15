@@ -64,4 +64,4 @@ and what value is pointer p pointing to?
 - p is stored at the address 0x00100D74 which contains the address p points to 0x00100D70 which contains the value 8.
 9. Consider AM14 to AM17. Is the RISC-V processor using big-endian or little-endian?
 Why?
--
+- The RISC-V processor is little-endian. The value of cs is reassigned to 0x1234abcd which populates the char array and are then indexed byte by byte. The LSB of this new value occupies the lowest memory address and thus the processor is little-endian.
