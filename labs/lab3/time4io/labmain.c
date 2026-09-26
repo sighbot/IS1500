@@ -16,6 +16,7 @@ extern int nextprime( int );
 
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
+int counter = 0;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -25,6 +26,12 @@ void handle_interrupt(unsigned cause)
 void labinit(void)
 {}
 
+void set_leds(int led_mask) {
+  volatile int* led_address = (volatile int*) 0x04000000;
+
+  *led_address = led_mask;
+}
+
 /* Your code goes into main as well as any needed functions. */
 int main() {
   // Call labinit()
@@ -32,10 +39,14 @@ int main() {
 
   // Enter a forever loop
   while (1) {
+    if(counter > 15) {
+      break;
+    }
     time2string( textstring, mytime ); // Converts mytime to string
     display_string( textstring ); //Print out the string 'textstring'
     delay( 1000 );          // Delays 1 sec (adjust this value)
     tick( &mytime );     // Ticks the clock once
+    set_leds(counter++);
   }
 }
 

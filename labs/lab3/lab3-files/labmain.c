@@ -25,6 +25,12 @@ void handle_interrupt(unsigned cause)
 void labinit(void)
 {}
 
+void set_leds(int led_mask) {
+  volatile int* led_address = 0x04000000;
+
+  *led_address = led_mask;
+}
+
 /* Your code goes into main as well as any needed functions. */
 int main() {
   // Call labinit()
