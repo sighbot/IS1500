@@ -16,7 +16,7 @@ extern int nextprime( int );
 
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
-int counter = 0;
+int hour_counter = 0;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -64,7 +64,7 @@ void set_displays(int display_number, int value) {
       *display_address = 0b10010000;
       break;
     case 0: // display 0
-      *display_address = 0b10100000;
+      *display_address = 0b11000000;
       break;
     default:
       *display_address = 0b01111111;
@@ -72,21 +72,62 @@ void set_displays(int display_number, int value) {
   }
 }
 
+int get_sw(void) {
+  volatile int* switch_address = (volatile int*) 0x04000010;
+  int switch_status = *switch_address & 0b1111111111;
+  return switch_status;
+}
+
+int get_btn(void) {
+  volatile int* btn2_address = (volatile int*) 0x040000d0;
+  int btn2_status = *btn2_address & 1;
+  return btn2_status;
+}
+
 /* Your code goes into main as well as any needed functions. */
 int main() {
   // Call labinit()
   labinit();
 
+  // start sequence
+  for(int i = 0; i <= 15; i++) {
+    set_leds(i);
+    delay( 1000 );
+  }
+
   // Enter a forever loop
   while (1) {
-    if(counter > 15) {
-      break;
-    }
     time2string( textstring, mytime ); // Converts mytime to string
     display_string( textstring ); //Print out the string 'textstring'
     delay( 1000 );          // Delays 1 sec (adjust this value)
     tick( &mytime );     // Ticks the clock once
-    set_leds(counter++);
+    
+    if(get_btn() == 1) {
+      int target_display = get_sw() >> 8;
+      
+      int display_value = get_sw() & 0b0000111111;
+
+      switch(target_display) {
+
+        case 1: // seconds-pair
+          set_displays(0, display_value % 10);
+          set_displays(1, display_value/10);
+          break;
+        case 2: // minutes-pair
+          set_displays(2, display_value % 10);
+          set_displays(3, display_value/10);
+          break;
+        case 3: // hours-pair
+          set_displays(4, display_value % 10);
+          set_displays(5, display_value/10);
+          break;  
+      }
+
+      if((get_sw() & 0b0010000000) == 0b0010000000){
+        break;
+      }
+      
+    }
   }
 }
 
