@@ -47,7 +47,7 @@ timstr:	.asciz 	"text more text lots of text\0" # want timstr to be 0x0037353A39
 	.text
 	# delay is declared global so the auto-grader's test harness (which
 	# calls delay directly from a small labmain.S) can resolve the symbol.
-	.globl timetemplate, tick, time2string, delay
+	.globl timetemplate, tick, time2string, delay, display_string
 
 # Function for displaying a string with a newline at the end	
 display_string:	
