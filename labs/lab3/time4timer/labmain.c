@@ -16,8 +16,9 @@ extern int nextprime( int );
 
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
-int hour_counter = 0;
+int hour_counter = 23;
 volatile unsigned int* timer_address = (volatile unsigned int*) 0x04000020;
+int timeoutcount = 0;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -111,18 +112,24 @@ int main() {
     unsigned short button_pressed = get_btn();
     unsigned short toggle_status = get_sw();
 
-    if (*timer_address & 0b01) {
+    if(*timer_address & 0b01) {
+      timeoutcount++;
+      *timer_address = 0;
+      labinit();
+    }
+
+    if (timeoutcount == 9) {
       time2string( textstring, mytime ); // Converts mytime to string
       display_string( textstring ); //Print out the string 'textstring'
       tick( &mytime );     // Ticks the clock once
     
-      if(mytime == 0){
+      if((mytime & 0xFFFF) == 0){
         hour_counter++;
       }
-      set_displays(0, mytime & 0x0001);
-      set_displays(1, mytime & 0x0010);
-      set_displays(2, mytime & 0x0100);
-      set_displays(3, mytime & 0x1000);
+      set_displays(0, mytime & 0x000F);
+      set_displays(1, (mytime & 0x00F0) >> 4);
+      set_displays(2, (mytime & 0x0F00) >> 8);
+      set_displays(3, (mytime & 0xF000) >> 12);
       set_displays(4, hour_counter % 10);
       set_displays(5, hour_counter / 10);
 
@@ -133,15 +140,15 @@ int main() {
 
         switch(target_display) {
           case 1: // seconds-pair
-            mytime = (mytime & 0x1110) | ((display_value % 10) & 0x0001);
+            mytime = (mytime & 0xFFF0) | ((display_value % 10) & 0x000F);
             set_displays(0, display_value % 10);
-            mytime = (mytime & 0x1101) | ((display_value / 10) & 0x0010);
+            mytime = (mytime & 0xFF0F) | (((display_value / 10) << 4)& 0x00F0);
             set_displays(1, display_value/10);
             break;
           case 2: // minutes-pair
-            mytime = (mytime & 0x1011) | ((display_value % 10) & 0x0100);
+            mytime = (mytime & 0xF0FF) | (((display_value % 10) << 8)& 0x0F00);
             set_displays(2, display_value % 10);
-            mytime = (mytime & 0x0111) | ((display_value / 10) & 0x1000);
+            mytime = (mytime & 0x0FFF) | (((display_value / 10) << 12) & 0xF000);
             set_displays(3, display_value/10);
             break;
           case 3: // hours-pair
@@ -156,6 +163,7 @@ int main() {
         } 
       }
 
+      timeoutcount = 0;
       *timer_address = 0;
       labinit();
     }
