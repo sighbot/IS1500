@@ -17,7 +17,7 @@ extern int nextprime( int );
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
 int hour_counter = 0;
-volatile unsigned int* timer_address = (volatile int*) 0x04000020;
+volatile unsigned int* timer_address = (volatile unsigned int*) 0x04000020;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -119,12 +119,12 @@ int main() {
       if(mytime == 0){
         hour_counter++;
       }
-      display_value(0, mytime & 0x0001)
-      display_value(1, mytime & 0x0010)
-      display_value(2, mytime & 0x0100)
-      display_value(3, mytime & 0x1000)
-      display_value(4, hour_counter % 10)
-      display_value(5, hour_counter / 10)
+      set_displays(0, mytime & 0x0001);
+      set_displays(1, mytime & 0x0010);
+      set_displays(2, mytime & 0x0100);
+      set_displays(3, mytime & 0x1000);
+      set_displays(4, hour_counter % 10);
+      set_displays(5, hour_counter / 10);
 
       if(button_pressed) {
         int target_display = toggle_status >> 8;
@@ -133,19 +133,19 @@ int main() {
 
         switch(target_display) {
           case 1: // seconds-pair
-            mytime = (mytime & 0x1110) & ((display_value % 10) & 0x0001)
+            mytime = (mytime & 0x1110) | ((display_value % 10) & 0x0001);
             set_displays(0, display_value % 10);
-            mytime = (mytime & 0x1101) & ((display_value / 10) & 0x0010)
+            mytime = (mytime & 0x1101) | ((display_value / 10) & 0x0010);
             set_displays(1, display_value/10);
             break;
           case 2: // minutes-pair
-            mytime = (mytime & 0x1011) & ((display_value % 10) & 0x0100)
+            mytime = (mytime & 0x1011) | ((display_value % 10) & 0x0100);
             set_displays(2, display_value % 10);
-            mytime = (mytime & 0x0111) & ((display_value / 10) & 0x1000)
+            mytime = (mytime & 0x0111) | ((display_value / 10) & 0x1000);
             set_displays(3, display_value/10);
             break;
           case 3: // hours-pair
-            hour_count = display_value;
+            hour_counter = display_value;
             set_displays(4, display_value % 10);
             set_displays(5, display_value/10);
             break;  
