@@ -16,7 +16,7 @@ extern int nextprime( int );
 
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
-int hour_counter = 0;
+volatile unsigned int* timer_address = (volatile int*) 0x04000020;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -24,7 +24,15 @@ void handle_interrupt(unsigned cause)
 
 /* Add your code here for initializing interrupts. */
 void labinit(void)
-{}
+{
+  timer_address += 2; // periodl register
+  *timer_address = 29999 // 100 ms
+
+  timer_address--: // control register
+  *timer_address = 0b0100; // start timer
+
+  timer_address--; // cancel offset
+}
 
 void set_leds(int led_mask) {
   volatile int* led_address = (volatile int*) 0x04000000;
@@ -91,42 +99,49 @@ int main() {
 
   // start sequence
   for(int i = 0; i <= 15; i++) {
-    set_leds(i);
-    delay( 1000 );
+    if (*timer_address & 0b01){
+      set_leds(i);
+      *timer_address = 0;
+    }
   }
 
   // Enter a forever loop
   while (1) {
-    time2string( textstring, mytime ); // Converts mytime to string
-    display_string( textstring ); //Print out the string 'textstring'
-    delay( 1000 );          // Delays 1 sec (adjust this value)
-    tick( &mytime );     // Ticks the clock once
+    unsigned short button_pressed = get_btn();
+    unsigned short toggle_status = get_sw();
+
+    if (*timer_address & 0b01) {
+      time2string( textstring, mytime ); // Converts mytime to string
+      display_string( textstring ); //Print out the string 'textstring'
+      tick( &mytime );     // Ticks the clock once
     
-    if(get_btn() == 1) {
-      int target_display = get_sw() >> 8;
-      
-      int display_value = get_sw() & 0b0000111111;
+      if(button_pressed) {
+        int target_display = toggle_status >> 8;
+        
+        int display_value = toggle_status & 0b0000111111;
 
-      switch(target_display) {
+        switch(target_display) {
 
-        case 1: // seconds-pair
-          set_displays(0, display_value % 10);
-          set_displays(1, display_value/10);
+          case 1: // seconds-pair
+            set_displays(0, display_value % 10);
+            set_displays(1, display_value/10);
+            break;
+          case 2: // minutes-pair
+            set_displays(2, display_value % 10);
+            set_displays(3, display_value/10);
+            break;
+          case 3: // hours-pair
+            set_displays(4, display_value % 10);
+            set_displays(5, display_value/10);
+            break;  
+        }
+          
+        if((toggle_status & 0b0010000000) == 0b0010000000){
           break;
-        case 2: // minutes-pair
-          set_displays(2, display_value % 10);
-          set_displays(3, display_value/10);
-          break;
-        case 3: // hours-pair
-          set_displays(4, display_value % 10);
-          set_displays(5, display_value/10);
-          break;  
+        } 
       }
 
-      if((get_sw() & 0b0010000000) == 0b0010000000){
-        break;
-      }
-      
+      *timer_address = 0;
     }
   }
 }
