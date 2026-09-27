@@ -16,7 +16,7 @@ extern int nextprime( int );
 
 int mytime = 0x5957;
 char textstring[] = "text, more text, and even more text!";
-volatile unsigned int* timer_address = (volatile int*) 0x04000020;
+volatile unsigned int* timer_address = (volatile unsigned int*) 0x04000020;
 
 /* Below is the function that will be called when an interrupt is triggered. */
 void handle_interrupt(unsigned cause) 
@@ -26,9 +26,9 @@ void handle_interrupt(unsigned cause)
 void labinit(void)
 {
   timer_address += 2; // periodl register
-  *timer_address = 29999 // 100 ms
+  *timer_address = 29999; // 100 ms
 
-  timer_address--: // control register
+  timer_address--; // control register
   *timer_address = 0b0100; // start timer
 
   timer_address--; // cancel offset
@@ -142,6 +142,7 @@ int main() {
       }
 
       *timer_address = 0;
+      labinit();
     }
   }
 }
