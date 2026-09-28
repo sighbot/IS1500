@@ -101,6 +101,17 @@ int main() {
     display_string( textstring ); //Print out the string 'textstring'
     delay( 1000 );          // Delays 1 sec (adjust this value)
     tick( &mytime );     // Ticks the clock once
+
+      if((mytime & 0xFFFF) == 0){
+        hour_counter++;
+      }
+      set_displays(0, mytime & 0x000F);
+      set_displays(1, (mytime & 0x00F0) >> 4);
+      set_displays(2, (mytime & 0x0F00) >> 8);
+      set_displays(3, (mytime & 0xF000) >> 12);
+      set_displays(4, hour_counter % 10);
+      set_displays(5, hour_counter / 10);
+
     
     if(get_btn() == 1) {
       int target_display = get_sw() >> 8;
@@ -108,16 +119,20 @@ int main() {
       int display_value = get_sw() & 0b0000111111;
 
       switch(target_display) {
-
         case 1: // seconds-pair
+          mytime = (mytime & 0xFFF0) | ((display_value % 10) & 0x000F);
           set_displays(0, display_value % 10);
+          mytime = (mytime & 0xFF0F) | (((display_value / 10) << 4)& 0x00F0);
           set_displays(1, display_value/10);
           break;
         case 2: // minutes-pair
+          mytime = (mytime & 0xF0FF) | (((display_value % 10) << 8)& 0x0F00);
           set_displays(2, display_value % 10);
+          mytime = (mytime & 0x0FFF) | (((display_value / 10) << 12) & 0xF000);
           set_displays(3, display_value/10);
           break;
         case 3: // hours-pair
+          hour_counter = display_value;
           set_displays(4, display_value % 10);
           set_displays(5, display_value/10);
           break;  

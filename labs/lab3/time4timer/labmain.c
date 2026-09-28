@@ -100,10 +100,16 @@ int main() {
   labinit();
 
   // start sequence
-  for(int i = 0; i <= 15; i++) {
-    if (*timer_address & 0b01){
-      set_leds(i);
+  short startup_count = 0;
+  while(startup_count < 160) {
+    if(*timer_address & 0b01){
+      if(startup_count % 10 == 0){
+        set_leds(startup_count/10);
+      }
+
+      startup_count++;
       *timer_address = 0;
+      labinit();
     }
   }
 
