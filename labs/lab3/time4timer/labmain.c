@@ -28,7 +28,9 @@ void handle_interrupt(unsigned cause)
 void labinit(void)
 {
   timer_address += 2; // periodl register
-  *timer_address = 29999; // 100 ms
+  *timer_address = 0b1100011010111111;
+  timer_address += 1; // periodh register
+  *timer_address = 0b101101; // 100 ms combined
 
   timer_address--; // control register
   *timer_address = 0b0100; // start timer
@@ -124,7 +126,7 @@ int main() {
       labinit();
     }
 
-    if (timeoutcount == 9) {
+    if (timeoutcount == 10) {
       time2string( textstring, mytime ); // Converts mytime to string
       display_string( textstring ); //Print out the string 'textstring'
       tick( &mytime );     // Ticks the clock once
