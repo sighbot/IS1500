@@ -4,6 +4,7 @@
 
    For copyright and licensing, see file COPYING */
 
+   Modified by Tobias Wicklander & Lovisa Wicklander 2026
 
 /* Below functions are external and found in other files. */
 extern void print(const char*);
@@ -26,12 +27,14 @@ void handle_interrupt(unsigned cause)
 void labinit(void)
 {}
 
+// 1c
 void set_leds(int led_mask) {
   volatile int* led_address = (volatile int*) 0x04000000;
 
   *led_address = led_mask;
 }
 
+// 1e
 void set_displays(int display_number, int value) {
   volatile int* display_address = (volatile int*) (0x04000050 + 0x10*display_number);
 
@@ -72,12 +75,14 @@ void set_displays(int display_number, int value) {
   }
 }
 
+// 1f
 int get_sw(void) {
   volatile int* switch_address = (volatile int*) 0x04000010;
   int switch_status = *switch_address & 0b1111111111;
   return switch_status;
 }
 
+// 1g
 int get_btn(void) {
   volatile int* btn2_address = (volatile int*) 0x040000d0;
   int btn2_status = *btn2_address & 1;
@@ -89,7 +94,7 @@ int main() {
   // Call labinit()
   labinit();
 
-  // start sequence
+  // start sequence (1d)
   for(int i = 0; i <= 15; i++) {
     set_leds(i);
     delay( 1000 );
@@ -135,7 +140,9 @@ int main() {
           hour_counter = display_value;
           set_displays(4, display_value % 10);
           set_displays(5, display_value/10);
-          break;  
+          break;
+        default:
+          break;
       }
 
       if((get_sw() & 0b0010000000) == 0b0010000000){

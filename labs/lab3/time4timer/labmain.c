@@ -4,6 +4,7 @@
 
    For copyright and licensing, see file COPYING */
 
+   Modified by Tobias Wicklander & Lovisa Wicklander 2026
 
 /* Below functions are external and found in other files. */
 extern void print(const char*);
@@ -163,7 +164,9 @@ int main() {
             hour_counter = display_value;
             set_displays(4, display_value % 10);
             set_displays(5, display_value/10);
-            break;  
+            break; 
+          default:
+            break;
         }
           
         if((toggle_status & 0b0010000000) == 0b0010000000){

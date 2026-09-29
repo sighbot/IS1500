@@ -4,6 +4,7 @@
 
    For copyright and licensing, see file COPYING */
 
+   Modified by Tobias Wicklander & Lovisa Wicklander 2026
 
 /* Below functions are external and found in other files. */
 extern void print(const char*);
@@ -55,7 +56,7 @@ void handle_interrupt(unsigned cause)
     timeoutcount = 0;
   }
   timeoutcount++;
-  *timer_address = 0b00;
+  *timer_address = 0b0;
   restart_timer();
 }
 
